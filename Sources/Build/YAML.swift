@@ -30,7 +30,7 @@ class YAML {
         var anys = anys
         try fputs(anys.removeFirst() as! String, fp)
         if !anys.isEmpty {
-            try fputs(anys.map(toYAML).joinWithSeparator(""), fp)
+            try fputs(anys.map(toYAML).joined(separator: ""), fp)
         }
         try fputs("\n", fp)
 
@@ -54,7 +54,7 @@ private func toYAML(any: Any) -> String {
     case let string as String:
         return string
     case let array as [String]:
-        return "[" + array.map(quote).joinWithSeparator(", ") + "]"
+        return "[" + array.map(quote).joined(separator: ", ") + "]"
     case let bool as Bool:
         return bool ? "true" : "false"
     default:

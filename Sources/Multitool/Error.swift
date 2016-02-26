@@ -13,14 +13,14 @@ import var Utility.stderr
 import PackageType
 import libc
 
-public enum CommandLineError: ErrorType {
+public enum CommandLineError: ErrorProtocol {
     public enum UsageMode {
         case Print, Imply
     }
     case InvalidUsage(String, UsageMode)
 }
 
-public enum Error: ErrorType {
+public enum Error: ErrorProtocol {
     case NoManifestFound
 }
 
@@ -41,10 +41,10 @@ extension Error: CustomStringConvertible {
         if isatty(fileno(libc.stdin)) {
             switch mode {
             case .Imply:
-                print("enter `swift build --help' for usage information", toStream: &stderr)
+                print("enter `swift build --help' for usage information", to: &stderr)
             case .Print:
-                print("", toStream: &stderr)
-                usage { print($0, toStream: &stderr) }
+                print("", to: &stderr)
+                usage { print($0, to: &stderr) }
             }
         }
     default:
@@ -63,8 +63,8 @@ private func red(input: Any) -> String {
 
 private func perror(msg: Any) {
     if !isatty(fileno(libc.stderr)) {
-        print("swift-build: error:", msg, toStream: &stderr)
+        print("swift-build: error:", msg, to: &stderr)
     } else {
-        print(red("error:"), msg, toStream: &stderr)
+        print(red("error:"), msg, to: &stderr)
     }
 }

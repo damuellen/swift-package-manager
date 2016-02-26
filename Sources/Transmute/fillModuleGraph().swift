@@ -18,7 +18,7 @@ func fillModuleGraph(packages: [Package], modulesForPackage: (Package) -> [Modul
                 ($0 as? SwiftModule)?.isLibrary ?? $0 is CModule
             }
             for module in packageModules {
-                module.dependencies.insertContentsOf(depModules, at: 0)
+                module.dependencies.insert(contentsOf: depModules, at: 0)
             }
         }
     }

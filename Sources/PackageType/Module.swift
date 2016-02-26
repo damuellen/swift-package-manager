@@ -51,7 +51,7 @@ public class SwiftModule: Module {
 
     public var isLibrary: Bool {
         return !sources.relativePaths.contains { path in
-            path.basename.lowercaseString == "main.swift"
+            path.basename.lowercased() == "main.swift"
         }
     }
 }
