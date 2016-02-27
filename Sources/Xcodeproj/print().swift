@@ -306,19 +306,20 @@ extension SwiftModule {
     }
     
     var buildSettings: String {
-        var buildSettings = "PRODUCT_NAME = '$(TARGET_NAME)';"
+        var buildSettings = [("PRODUCT_NAME", "'$(TARGET_NAME)'")]
+        buildSettings.append(("PRODUCT_MODULE_NAME", c99name))
 
         if self is TestModule {
-            buildSettings += " EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;"
-            buildSettings += " LD_RUNPATH_SEARCH_PATHS = '@loader_path/../Frameworks';"
+            buildSettings.append(("EMBEDDED_CONTENT_CONTAINS_SWIFT", "YES"))
+            buildSettings.append(("LD_RUNPATH_SEARCH_PATHS", "'@loader_path/../Frameworks'"))
         } else if isLibrary {
-            buildSettings += " ENABLE_TESTABILITY = YES;"
-            buildSettings += " DYLIB_INSTALL_NAME_BASE = '$(CONFIGURATION_BUILD_DIR)';"
-            buildSettings += " SWIFT_FORCE_STATIC_LINK_STDLIB = YES;"
+            buildSettings.append(("ENABLE_TESTABILITY", "YES"))
+            buildSettings.append(("DYLIB_INSTALL_NAME_BASE", "'$(CONFIGURATION_BUILD_DIR)'"))
+            buildSettings.append((" SWIFT_FORCE_STATIC_LINK_STDLIB", "YES"))
         } else {
-            buildSettings += " SWIFT_FORCE_STATIC_LINK_STDLIB = YES;"
+            buildSettings.append(("SWIFT_FORCE_STATIC_LINK_STDLIB", "YES"))
         }
 
-        return buildSettings
+        return buildSettings.map{ "\($0) = \($1);" }.joinWithSeparator(" ")
     }
 }
